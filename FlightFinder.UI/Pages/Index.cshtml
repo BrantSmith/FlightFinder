@@ -1,0 +1,49 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "FlightFinder";
+}
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.querySelector('#Input');
+        const charCount = document.querySelector('.char-count');
+        charCount.innerHTML = 100 - input.value.length;
+
+        input.addEventListener('input', () => {
+            charCount.innerHTML = 100 - input.value.length;
+        })
+    });
+</script>
+<div class="row justify-content-center">
+    <div class="col col-6">
+        <form method="post">
+            <legend>Find instances of the word "flight" in the specified string</legend>
+            <div class="d-flex align-items-end justify-content-between gap-3">
+                <div class="flex-grow-1">
+                    <label asp-for="Input" class="control-label"></label>
+                    <input asp-for="Input" class="form-control" value="@Model.Input" maxlength="100" />
+                    <span asp-validation-for="Input" class="text-danger"></span>
+                </div>
+                <div>
+                    <input type="submit" value="Submit" class="btn btn-primary" />
+                </div>
+            </div>
+            <sub class="text-secondary"><span class="char-count">100</span> characters remaining</sub>
+
+            @if (!string.IsNullOrWhiteSpace(@Model.Output))
+            {
+                <br />
+                <br />
+
+                <label asp-for="Output" class="control-label fw-bold"></label>
+                <text>@Model.Output instances of the word "flight" found</text>
+            }
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
